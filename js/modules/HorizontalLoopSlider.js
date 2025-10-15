@@ -23,11 +23,13 @@ export class HorizontalLoopSlider {
     this.isSP = window.matchMedia('(max-width: 767px)').matches; // SP判定
 
     this.setup(); // ループの初期設定
-    
-    // パララックス効果が有効な場合のみ開始
+
+    // パララックスの制御
     if (this.options.parallax) {
       this.animateParallax = this.animateParallax.bind(this);
       this.rafId = requestAnimationFrame(this.animateParallax);
+    } else {
+      this.wrapper.classList.add('no-parallax');
     }
 
     // SP時はリサイズイベントを監視しない
