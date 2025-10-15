@@ -9,7 +9,10 @@ body {
   background: #111;
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3vw;
+  padding: 4vw 0;
 }
 
 .p-loop-slider {
@@ -26,9 +29,9 @@ body {
 	flex-shrink: 0;
 	overflow: hidden;
 	position: relative;
-  width: 320px;
-  height: 320px;
-  margin-right: 16px;
+  width: 22vw;
+  height: 22vw;
+  margin-right: 1vw;
 
 	img {
 		height: 100%;
