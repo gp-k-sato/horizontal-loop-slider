@@ -5,12 +5,14 @@ import { HorizontalLoopSlider } from "./modules/HorizontalLoopSlider.js";
 
 // カスタムオプションでの使用
 const slider = new HorizontalLoopSlider('.js-loop-slider', {
-  speed: 80, // スライド速度（px/秒）
+  speed: 60, // スライド速度（px/秒）
+  direction: 'left' // 左方向にスライド（デフォルト）
 });
 
-const sliderParallax = new HorizontalLoopSlider('.js-loop-slider-parallax ', {
-  speed: 80, // スライド速度（px/秒）
-  parallax: true // パララックスを有効化
+const sliderParallax = new HorizontalLoopSlider('.js-loop-slider-parallax', {
+  speed: 60, // スライド速度（px/秒）
+  parallax: true, // パララックスを有効化
+  direction: 'right' // 右方向にスライド
 });
 
 

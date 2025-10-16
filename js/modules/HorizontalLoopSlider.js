@@ -12,6 +12,7 @@ export class HorizontalLoopSlider {
     this.options = {
       speed: 50, // スライドのループ速度（px/秒）
       parallax: false, // パララックスの有効/無効
+      direction: 'left', // スライド方向 ('left' または 'right')
       ...options
     };
 
@@ -68,10 +69,20 @@ export class HorizontalLoopSlider {
       return sum + width + marginRight;
     }, 0);
 
-    gsap.set(this.wrapper, { x: 0 });
+    // 方向に応じて初期位置を設定
+    if (this.options.direction === 'right') {
+      gsap.set(this.wrapper, { x: -(this.totalWidth / 2) });
+    } else {
+      gsap.set(this.wrapper, { x: 0 });
+    }
+
+    // 方向に応じてアニメーション方向を設定
+    const moveDistance = this.options.direction === 'right' 
+      ? `+=${this.totalWidth / 2}` 
+      : `-=${this.totalWidth / 2}`;
 
     this.tween = gsap.to(this.wrapper, {
-      x: `-=${this.totalWidth / 2}`,
+      x: moveDistance,
       duration: (this.totalWidth / 2) / this.speed,
       ease: "none",
       repeat: -1,
@@ -101,16 +112,24 @@ export class HorizontalLoopSlider {
         return;
       }
 
-      // パララックスを開始・終了させる位置
-      const parallaxStart = winWidth + itemWidth;
-      const parallaxEnd = -itemWidth;
-
-      // 進行率（1 → 0）
-      let ratio = (parallaxStart - centerX) / (parallaxStart - parallaxEnd);
-      ratio = gsap.utils.clamp(0, 1, ratio);
-
-      // 進行率に応じた画像の移動量を計算
-      const translateX = ratio * offsetRange;
+      // 方向に応じてパララックスを調整
+      let translateX;
+      
+      if (this.options.direction === 'right') {
+        // 右方向の場合のパララックス計算
+        const parallaxStart = -itemWidth;
+        const parallaxEnd = winWidth + itemWidth;
+        let ratio = (centerX - parallaxStart) / (parallaxEnd - parallaxStart);
+        ratio = gsap.utils.clamp(0, 1, ratio);
+        translateX = ratio * offsetRange;
+      } else {
+        // 左方向（デフォルト）の場合のパララックス計算
+        const parallaxStart = winWidth + itemWidth;
+        const parallaxEnd = -itemWidth;
+        let ratio = (parallaxStart - centerX) / (parallaxStart - parallaxEnd);
+        ratio = gsap.utils.clamp(0, 1, ratio);
+        translateX = ratio * offsetRange;
+      }
 
       gsap.set(img, { x: translateX });
     });

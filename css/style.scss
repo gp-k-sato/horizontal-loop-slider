@@ -44,6 +44,7 @@ body {
 	}
 }
 
+// パララックス無効化の場合は画像を固定
 .no-parallax {
   .p-loop-slider__item img {
     width: 100%;
