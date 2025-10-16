@@ -33,6 +33,11 @@ export class HorizontalLoopSlider {
       this.wrapper.classList.add('no-parallax');
     }
 
+    // 方向に応じたクラス付与
+    if (this.options.direction === 'right') {
+      this.wrapper.classList.add('direction-reverse');
+    }
+
     // SP時はリサイズイベントを監視しない
     if (!this.isSP) {
       this._debouncedResize = this._debouncedResize.bind(this);
@@ -116,14 +121,12 @@ export class HorizontalLoopSlider {
       let translateX;
       
       if (this.options.direction === 'right') {
-        // 右方向の場合のパララックス計算
         const parallaxStart = -itemWidth;
         const parallaxEnd = winWidth + itemWidth;
         let ratio = (centerX - parallaxStart) / (parallaxEnd - parallaxStart);
         ratio = gsap.utils.clamp(0, 1, ratio);
-        translateX = ratio * offsetRange;
+        translateX = -ratio * offsetRange;
       } else {
-        // 左方向（デフォルト）の場合のパララックス計算
         const parallaxStart = winWidth + itemWidth;
         const parallaxEnd = -itemWidth;
         let ratio = (parallaxStart - centerX) / (parallaxStart - parallaxEnd);
