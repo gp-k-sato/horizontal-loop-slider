@@ -23,6 +23,11 @@ export class HorizontalLoopSlider {
 
     this.isSP = window.matchMedia('(max-width: 767px)').matches; // SP判定
 
+    // SP時は速度を半分にする
+    if (this.isSP) {
+      this.speed = this.options.speed * 0.5;
+    }
+
     this.setup(); // ループの初期設定
 
     // パララックスの制御
@@ -49,6 +54,14 @@ export class HorizontalLoopSlider {
   _debouncedResize() {
     clearTimeout(this._resizeTimer);
     this._resizeTimer = setTimeout(() => {
+      const oldIsSP = this.isSP;
+      this.isSP = window.matchMedia('(max-width: 767px)').matches;
+      
+      // 速度を再設定
+      if (oldIsSP !== this.isSP) {
+        this.speed = this.isSP ? this.options.speed * 0.5 : this.options.speed;
+      }
+      
       this.setup();
     }, 300);
   }
