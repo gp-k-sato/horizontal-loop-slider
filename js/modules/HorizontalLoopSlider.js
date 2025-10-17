@@ -1,4 +1,4 @@
-// import { gsap } from "gsap"; // モジュール版を使用する場合は有効化
+// import { gsap } from "gsap"; // GSAPモジュール版を使用する場合は有効化
 
 export class HorizontalLoopSlider {
   constructor(selector, options = {}) {
@@ -20,6 +20,7 @@ export class HorizontalLoopSlider {
     this.tween = null;
     this.rafId = null;
     this._resizeTimer = null;
+    this._lastWidth = window.innerWidth; // リサイズ判定用の幅を記録
 
     this.isSP = window.matchMedia('(max-width: 767px)').matches; // SP判定
 
@@ -43,21 +44,28 @@ export class HorizontalLoopSlider {
       this.wrapper.classList.add('direction-reverse');
     }
 
-    // SP時はリサイズイベントを監視しない
-    if (!this.isSP) {
-      this._debouncedResize = this._debouncedResize.bind(this);
-      window.addEventListener("resize", this._debouncedResize);
-    }
+    // 幅の変化のみを監視するリサイズイベント（全デバイス対象）
+    this._debouncedResize = this._debouncedResize.bind(this);
+    window.addEventListener("resize", this._debouncedResize);
   }
 
-  // リサイズ時のデバウンス処理
+  // リサイズ時のデバウンス処理（幅の変化のみを監視）
   _debouncedResize() {
+    const currentWidth = window.innerWidth;
+    
+    // 幅に変化がない場合は処理しない
+    if (currentWidth === this._lastWidth) {
+      return;
+    }
+    
+    this._lastWidth = currentWidth;
+    
     clearTimeout(this._resizeTimer);
     this._resizeTimer = setTimeout(() => {
       const oldIsSP = this.isSP;
       this.isSP = window.matchMedia('(max-width: 767px)').matches;
       
-      // 速度を再設定
+      // デバイス判定が変わった場合のみ速度を再設定
       if (oldIsSP !== this.isSP) {
         this.speed = this.isSP ? this.options.speed * 0.5 : this.options.speed;
       }
@@ -157,9 +165,7 @@ export class HorizontalLoopSlider {
   destroy() {
     if (this.tween) this.tween.kill();
     if (this.rafId) cancelAnimationFrame(this.rafId);
-    if (!this.isSP) {
-      window.removeEventListener("resize", this._debouncedResize);
-      clearTimeout(this._resizeTimer);
-    }
+    window.removeEventListener("resize", this._debouncedResize);
+    clearTimeout(this._resizeTimer);
   }
 }
