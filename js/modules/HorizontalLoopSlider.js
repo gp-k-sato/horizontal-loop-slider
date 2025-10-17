@@ -5,8 +5,11 @@ export class HorizontalLoopSlider {
     this.wrapper = document.querySelector(selector);
     if (!this.wrapper) return;
 
-    this.items = Array.from(this.wrapper.querySelectorAll(".js-loop-slide"));
-    if (!this.items.length) return;
+    this.originalItems = Array.from(this.wrapper.querySelectorAll(".js-loop-slide"));
+    if (!this.originalItems.length) return;
+
+    // 元のアイテム数を保存
+    this.originalItemsCount = this.originalItems.length;
 
     // デフォルトオプション設定
     this.options = {
@@ -77,14 +80,18 @@ export class HorizontalLoopSlider {
   setup() {
     if (this.tween) this.tween.kill();
 
-    // ループが途切れないようスライドを複製
-    if (this.wrapper.children.length === this.items.length) {
-      this.items.forEach((item) => {
-        const clone = item.cloneNode(true);
-        this.wrapper.appendChild(clone);
-      });
+    // 全てのクローンを削除（オリジナルのみ残す）
+    while (this.wrapper.children.length > this.originalItemsCount) {
+      this.wrapper.removeChild(this.wrapper.lastChild);
     }
 
+    // オリジナルアイテムを複製
+    this.originalItems.forEach((item) => {
+      const clone = item.cloneNode(true);
+      this.wrapper.appendChild(clone);
+    });
+
+    // 現在のアイテム一覧を更新（オリジナル + クローン）
     this.items = Array.from(this.wrapper.querySelectorAll(".js-loop-slide"));
 
     // 各スライドの幅合計（margin含む）を取得
