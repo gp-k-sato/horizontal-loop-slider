@@ -16,33 +16,38 @@ body {
   padding: 1vw 0;
 }
 
+
+//-------------------------------------------------
+// p-loop-slider
+//-------------------------------------------------
 .p-loop-slider {
-	position: relative;
+  position: relative;
   overflow: hidden;
 }
 
 .p-loop-slider__wrapper {
-	display: flex;
-	will-change: transform;
+  display: flex;
+  will-change: transform;
 }
 
+// スライダーアイテムのサイズとmarginはCSSで調整する
 .p-loop-slider__item {
-	flex-shrink: 0;
-	overflow: hidden;
-	position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
   width: 22vw;
   height: 22vw;
   margin-right: 1vw;
 
-	img {
-		height: 100%;
-		width: auto;
-		will-change: transform;
-		display: block;
-		position: absolute;
-		top: 0;
-		right: 0;
-	}
+  img {
+    height: 100%;
+    width: auto;
+    will-change: transform;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
 
 // パララックス無効化の場合は画像を固定
@@ -55,6 +60,7 @@ body {
   }
 }
 
+// 逆方向スライダー用
 .direction-reverse {
   .p-loop-slider__item img {
     right: inherit;
