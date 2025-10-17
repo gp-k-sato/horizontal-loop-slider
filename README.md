@@ -14,6 +14,29 @@ GSAPを使用した、水平方向に無限ループする画像スライダー�
 
 - [GSAP 3.x](https://greensock.com/gsap/)
 
+## HTML構造
+
+```html
+<div class="p-loop-slider">
+  <div class="p-loop-slider__wrapper js-loop-slider">
+    <div class="p-loop-slider__item js-loop-slide">
+      <img src="images/img_01.jpg" alt="" width="1200" height="500">
+    </div>
+    <div class="p-loop-slider__item js-loop-slide">
+      <img src="images/img_02.jpg" alt="" width="1200" height="500">
+    </div>
+    <div class="p-loop-slider__item js-loop-slide">
+      <img src="images/img_03.jpg" alt="" width="1200" height="500">
+    </div>
+    <!-- 必要な分だけスライドを追加 -->
+  </div>
+</div>
+```
+
+**クラス名：**
+- `.js-loop-slider`: スライダーの初期化に使用するセレクタ
+- `.js-loop-slide`: 各スライドアイテムに必須のクラス
+- その他のクラス（`.p-loop-slider`など）：CSS用のクラス
 
 ## 基本的な使用方法
 
